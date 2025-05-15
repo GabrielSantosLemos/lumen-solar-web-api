@@ -21,13 +21,13 @@ namespace LumenSolar.WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Inserir([FromBody] DoadoresInputModel input)
+        public IActionResult Inserir([FromBody] Doador input)
         {
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public IActionResult Atualizar([FromBody] DoadoresInputModel input, int id)
+        public IActionResult Atualizar([FromBody] Doador input, int id)
         {
             return NoContent();
         }

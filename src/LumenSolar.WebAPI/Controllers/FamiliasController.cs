@@ -14,13 +14,13 @@ namespace LumenSolar.WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Inserir([FromBody] FamiliaInputModel input)
+        public IActionResult Inserir([FromBody] Familia input)
         {
             return NoContent();
         }
 
         [HttpPut("/{id}")]
-        public IActionResult Atualizar([FromBody] FamiliaInputModel input, int id)
+        public IActionResult Atualizar([FromBody] Familia input, int id)
         {
             return NoContent();
         }
