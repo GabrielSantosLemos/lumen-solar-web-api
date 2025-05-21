@@ -1,3 +1,4 @@
+using LumenSolar.WebAPI;
 using LumenSolar.WebAPI.Data;
 using LumenSolar.WebAPI.Models.Users;
 using Microsoft.AspNetCore.Identity;
@@ -10,17 +11,20 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<Context>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Context")));
 
-builder.Services.AddIdentity<User, IdentityRole>(options =>
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
     options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
     options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
     options.User.AllowedUserNameCharacters = string.Empty;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireLowercase = false;
-    options.SignIn.RequireConfirmedEmail = true;
+    options.Password.RequireUppercase = false;
+    options.SignIn.RequireConfirmedEmail = false;
 })
 .AddEntityFrameworkStores<Context>()
 .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<TokenService>();
 
 var app = builder.Build();
 
