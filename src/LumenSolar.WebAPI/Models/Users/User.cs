@@ -3,4 +3,6 @@
 namespace LumenSolar.WebAPI.Models.Users
 {
     public class User : IdentityUser { }
+
+   
 }

@@ -36,10 +36,6 @@ namespace LumenSolar.WebAPI.Controllers
             return Ok(token);
         }
 
-        //[HttpPost("registrar")]
-        //public async Task<IActionResult> Registrar([FromBody] DoadorInputModel input)
-        //{
-           
-        //}
+       
     }
 }

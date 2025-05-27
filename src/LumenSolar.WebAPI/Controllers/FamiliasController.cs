@@ -1,5 +1,8 @@
 ﻿using LumenSolar.WebAPI.Models.Familias;
 using Microsoft.AspNetCore.Mvc;
+using LumenSolar.WebAPI.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace LumenSolar.WebAPI.Controllers
 {
@@ -7,10 +10,31 @@ namespace LumenSolar.WebAPI.Controllers
     [ApiController]
     public class FamiliasController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult BuscarTodas()
+        private readonly Context _context;
+
+        public FamiliasController(Context context)
         {
-            return Ok();
+            _context = context;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> BuscarTodas()
+        {
+            List<FamiliaOutPutModel> familias = await _context.Familia
+                .Include(itemFamilia => itemFamilia.Endereco)
+                .Include(itemFamilia => itemFamilia.User)
+                .Select(itemFamilia => new FamiliaOutPutModel
+                {
+                    Id = itemFamilia.Id,
+                    Cpf = itemFamilia.Cpf,
+                    RendaMensal = itemFamilia.RendaMensal,
+                    NumeroIntegrantes = itemFamilia.NumeroIntegrantes,
+                    Email = itemFamilia.User.Email,
+                    Cidade = itemFamilia.Endereco.Cidade
+                })
+                .ToListAsync();
+
+            return Ok(familias);
         }
 
         [HttpPost]

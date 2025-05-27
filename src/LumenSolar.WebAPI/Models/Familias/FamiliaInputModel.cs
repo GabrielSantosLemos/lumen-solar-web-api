@@ -4,6 +4,8 @@
     {
 
         //Info pessoais
+        public string Email { get; set; }
+        public string Senha { get; set; }
         public string Cpf { get; set; }
         public decimal RendaMensal { get; set; }
         public int NumeroIntegrantes { get; set; }
