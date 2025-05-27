@@ -1,10 +1,12 @@
 ﻿using LumenSolar.WebAPI.Models.Doadores;
 using LumenSolar.WebAPI.Models.Familias;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace LumenSolar.WebAPI.Data
 {
-    public class Context : DbContext
+    public class Context : IdentityDbContext<IdentityUser, IdentityRole, string>
     {
         public Context(DbContextOptions<Context> options) : base(options)
         {

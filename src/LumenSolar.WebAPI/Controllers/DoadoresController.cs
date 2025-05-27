@@ -35,11 +35,7 @@ namespace LumenSolar.WebAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult Excluir(int id)
         {
-
-
             return NoContent();
         }
-
-
     }
 }
