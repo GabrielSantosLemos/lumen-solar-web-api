@@ -12,7 +12,7 @@ namespace LumenSolar.WebAPI.Models.Doadores
             Cpf = cpf;
             User = user;
         }
-
+        
         public int Id { get; set; }
         public string Cpf { get; set; }
 
