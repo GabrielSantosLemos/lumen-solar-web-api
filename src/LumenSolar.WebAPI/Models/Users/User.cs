@@ -2,5 +2,5 @@
 
 namespace LumenSolar.WebAPI.Models.Users
 {
-    //public class User : IdentityUser { }
+    public class User : IdentityUser { }
 }

@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Authorization;
 namespace LumenSolar.WebAPI.Controllers
 {
     [ApiController]
-    [Route("api´/[controller]")]
-    [Authorize(Roles ="Admin")] 
-   
+    [Route("api/[controller]")]
+    [Authorize(Roles = "Admin")]
+
     public class AdminController : ControllerBase
     {
         private readonly Context _context;
@@ -24,41 +24,24 @@ namespace LumenSolar.WebAPI.Controllers
         }
 
         [HttpGet("Familias")]
-        public async Task<IActionResult> BuscarTodasFamilias()
+        public IActionResult BuscarTodasFamilias()
         {
-            List<FamiliaOutPutModel> familias = await _context.Familia
+            List<Familia> familias = _context.Familia
                 .Include(itemFamilia => itemFamilia.Endereco)
                 .Include(itemFamilia => itemFamilia.User)
-                .Select(itemFamilia => new FamiliaOutPutModel
-                {
-                    Id = itemFamilia.Id,
-                    Cpf = itemFamilia.Cpf,
-                    RendaMensal = itemFamilia.RendaMensal,
-                    NumeroIntegrantes = itemFamilia.NumeroIntegrantes,
-                    Email = itemFamilia.User.Email,
-                    Cidade = itemFamilia.Endereco.Cidade
-                })
-                .ToListAsync();
+                .ToList();
 
             return Ok(familias);
         }
 
         [HttpGet("Doadores")]
-        public async Task<IActionResult> BuscarTodosDoadores()
+        public IActionResult BuscarTodosDoadores()
         {
-            List<DoadorOutPutModel> doadores = await _context.Doador
+            List<Doador> doadores = _context.Doador
                 .Include(itemDoador => itemDoador.User)
-                .Select(itemDoador => new DoadorOutPutModel
-                {
-                    Id = itemDoador.Id,
-                    Email = itemDoador.User.Email,
-                    Cpf = itemDoador.Cpf
-                })
-                .ToListAsync();
+                .ToList();
 
-                return Ok(doadores);
+            return Ok(doadores);
         }
     }
-
-    
 }
