@@ -21,5 +21,15 @@
         public string Bairro { get; set; }
         public string Cidade { get; set; }
         public string Uf { get; set; }
+
+        public void Atualizar(string cep, string rua, int numero, string bairro, string cidade, string uf)
+        {
+            Cep = cep;
+            Rua = rua;
+            Numero = numero;
+            Bairro = bairro;
+            Cidade = cidade;
+            Uf = uf;
+        }
     }
 }

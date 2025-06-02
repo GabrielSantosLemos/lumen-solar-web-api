@@ -9,11 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace LumenSolar.WebAPI.Migrations
+namespace LumenSolar.WebAPI.Data.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20250527175953_InitialIdentity")]
-    partial class InitialIdentity
+    [Migration("20250602182602_Inicial")]
+    partial class Inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,30 @@ namespace LumenSolar.WebAPI.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("LumenSolar.WebAPI.Models.Doadores.Doacao", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DoadorId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoadorId");
+
+                    b.ToTable("Doacao");
+                });
+
             modelBuilder.Entity("LumenSolar.WebAPI.Models.Doadores.Doador", b =>
                 {
                     b.Property<int>("Id")
@@ -33,9 +57,28 @@ namespace LumenSolar.WebAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Celular")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Cnpj")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Cpf")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<string>("NomeCompleto")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("NomeEmpresa")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Tipo")
+                        .HasColumnType("integer");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -57,6 +100,10 @@ namespace LumenSolar.WebAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Celular")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Cpf")
                         .IsRequired()
                         .HasColumnType("text");
@@ -64,11 +111,25 @@ namespace LumenSolar.WebAPI.Migrations
                     b.Property<int>("EnderecoId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("NumeroIntegrantes")
+                    b.Property<decimal>("GastoComEnergia")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("NomeResponsavel")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("NumeroMoradores")
                         .HasColumnType("integer");
 
-                    b.Property<decimal>("RendaMensal")
+                    b.Property<decimal>("RendaFamiliar")
                         .HasColumnType("numeric");
+
+                    b.Property<string>("SituacaoVulnerabilidade")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -316,6 +377,17 @@ namespace LumenSolar.WebAPI.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("LumenSolar.WebAPI.Models.Doadores.Doacao", b =>
+                {
+                    b.HasOne("LumenSolar.WebAPI.Models.Doadores.Doador", "Doador")
+                        .WithMany("Doacoes")
+                        .HasForeignKey("DoadorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doador");
+                });
+
             modelBuilder.Entity("LumenSolar.WebAPI.Models.Doadores.Doador", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
@@ -395,6 +467,11 @@ namespace LumenSolar.WebAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("LumenSolar.WebAPI.Models.Doadores.Doador", b =>
+                {
+                    b.Navigation("Doacoes");
                 });
 #pragma warning restore 612, 618
         }

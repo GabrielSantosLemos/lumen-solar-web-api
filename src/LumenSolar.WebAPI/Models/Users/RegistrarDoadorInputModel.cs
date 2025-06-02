@@ -1,9 +1,10 @@
-﻿namespace LumenSolar.WebAPI.Models.Users
+﻿using LumenSolar.WebAPI.Models.Doadores;
+
+namespace LumenSolar.WebAPI.Models.Users
 {
     public class RegistrarDoadorInputModel
     {
-        public string Email { get; set; }
+        public DoadorInputModel Doador { get; set; }
         public string Senha { get; set; }
-        public string Cpf { get; set; }
     }
 }

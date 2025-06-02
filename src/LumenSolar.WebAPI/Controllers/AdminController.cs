@@ -1,44 +1,40 @@
-﻿using LumenSolar.WebAPI.Models.Familias;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using LumenSolar.WebAPI.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using LumenSolar.WebAPI.Data;
 using LumenSolar.WebAPI.Models.Doadores;
+using LumenSolar.WebAPI.Models.Familias;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LumenSolar.WebAPI.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
-
+    [Route("api/admin")]
+    //[Authorize(Roles = "Admin")]
     public class AdminController : ControllerBase
     {
         private readonly Context _context;
-        private readonly UserManager<IdentityUser> _userManager;
 
-        public AdminController(UserManager<IdentityUser> userManager, Context context)
+        public AdminController(Context context)
         {
-            _userManager = userManager;
             _context = context;
         }
 
-        [HttpGet("Familias")]
-        public IActionResult BuscarTodasFamilias()
+        [HttpGet("familias")]
+        public IActionResult FamiliasBuscarTodas()
         {
             List<Familia> familias = _context.Familia
-                .Include(itemFamilia => itemFamilia.Endereco)
-                .Include(itemFamilia => itemFamilia.User)
+                .Include(x => x.Endereco)
+                .Include(x => x.User)
                 .ToList();
 
             return Ok(familias);
         }
 
-        [HttpGet("Doadores")]
-        public IActionResult BuscarTodosDoadores()
+        [HttpGet("doadores")]
+        public IActionResult DoadoresBuscarTodos()
         {
             List<Doador> doadores = _context.Doador
-                .Include(itemDoador => itemDoador.User)
+                .Include(x => x.User)
                 .ToList();
 
             return Ok(doadores);

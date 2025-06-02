@@ -1,31 +1,9 @@
-﻿namespace LumenSolar.WebAPI.Models.Familias
-{
-    public class familias_exemplo
-    {
-    }
-}
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace LumenSolar.WebAPI.Models.Familias
 {
-    public class Familia
+    public class FamiliaInputModel
     {
-        private Familia() { }
-
-        public Familia(string nomeResponsavel, string cpf, string email, string telefone, string enderecoCompleto, decimal rendaFamiliar, int numeroMoradores, decimal gastoComEnergia, string situacaoVulnerabilidade)
-        {
-            NomeResponsavel = nomeResponsavel;
-            Cpf = cpf;
-            Email = email;
-            Telefone = telefone;
-            EnderecoCompleto = enderecoCompleto;
-            RendaFamiliar = rendaFamiliar;
-            NumeroMoradores = numeroMoradores;
-            GastoComEnergia = gastoComEnergia;
-            SituacaoVulnerabilidade = situacaoVulnerabilidade;
-        }
-
         [Key]
         public int Id { get; set; }
 
@@ -43,10 +21,25 @@ namespace LumenSolar.WebAPI.Models.Familias
 
         [Required(ErrorMessage = "O telefone é obrigatório.")]
         [Phone(ErrorMessage = "O telefone informado não é válido.")]
-        public string Telefone { get; set; }
+        public string Celular { get; set; }
 
-        [Required(ErrorMessage = "O endereço é obrigatório.")]
-        public string EnderecoCompleto { get; set; }
+        [Required(ErrorMessage = "Obrigatório.")]
+        public string Cep { get; set; }
+
+        [Required(ErrorMessage = "Obrigatório.")]
+        public string Rua { get; set; }
+
+        [Required(ErrorMessage = "Obrigatório.")]
+        public int Numero { get; set; }
+
+        [Required(ErrorMessage = "Obrigatório.")]
+        public string Bairro { get; set; }
+
+        [Required(ErrorMessage = "Obrigatório.")]
+        public string Cidade { get; set; }
+
+        [Required(ErrorMessage = "Obrigatório.")]
+        public string Uf { get; set; }
 
         [Required(ErrorMessage = "A renda familiar é obrigatória.")]
         [Range(0, double.MaxValue, ErrorMessage = "A renda familiar deve ser um valor positivo.")]
@@ -63,11 +56,5 @@ namespace LumenSolar.WebAPI.Models.Familias
         [Required(ErrorMessage = "A situação de vulnerabilidade é obrigatória.")]
         [StringLength(500)]
         public string SituacaoVulnerabilidade { get; set; }
-
-        public FamiliaEndereco Endereco { get; set; }
-        public int EnderecoId { get; set; }
-
-        public IdentityUser User { get; set; }
-        public string UserId { get; set; }
     }
 }

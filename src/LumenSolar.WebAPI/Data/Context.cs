@@ -13,7 +13,9 @@ namespace LumenSolar.WebAPI.Data
         }
 
         public DbSet<Familia> Familia { get; set; }
+        public DbSet<FamiliaEndereco> FamiliaEndereco { get; set; }
         public DbSet<Doador> Doador { get; set; }
+        public DbSet<Doacao> Doacao { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,6 +30,13 @@ namespace LumenSolar.WebAPI.Data
                         .HasOne(f => f.User)
                         .WithOne()
                         .HasForeignKey<Doador>(f => f.UserId);
+
+            modelBuilder.Entity<Doacao>()
+                .Property(d => d.Data)
+                .HasConversion(
+                    v => v.ToUniversalTime(),
+                    v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+                );
         }               
     }
 }

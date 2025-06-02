@@ -2,10 +2,11 @@
 {
     public class Doacao
     {
-        public Doacao(decimal valor, DateTime data)
+        public Doacao(decimal valor, DateTime data, int doadorId)
         {
             Valor = valor;
             Data = data;
+            DoadorId = doadorId;
         }
 
         public int Id { get; set; }

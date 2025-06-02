@@ -1,10 +1,9 @@
-﻿using LumenSolar.WebAPI.Models.Users;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using LumenSolar.WebAPI.Data;
 using LumenSolar.WebAPI.Models.Doadores;
 using LumenSolar.WebAPI.Models.Familias;
-using LumenSolar.WebAPI.Data;
-using Microsoft.AspNetCore.Authorization;
+using LumenSolar.WebAPI.Models.Users;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LumenSolar.WebAPI.Controllers
 {
@@ -46,8 +45,8 @@ namespace LumenSolar.WebAPI.Controllers
         {
             IdentityUser user = new()
             {
-                Email = input.Email,
-                UserName = input.Email
+                Email = input.Doador.Email,
+                UserName = input.Doador.Email,
             };
 
             IdentityResult result = await _userManager.CreateAsync(user, input.Senha);
@@ -56,7 +55,26 @@ namespace LumenSolar.WebAPI.Controllers
 
             await _userManager.AddToRoleAsync(user, "Doador");
 
-            Doador doador = new(input.Cpf, user);
+            Doador doador;
+
+            if (input.Doador.Tipo == DoadorTipoEnum.Fisica)
+            {
+                doador = new(
+                    input.Doador.NomeCompleto,
+                    input.Doador.Celular,
+                    input.Doador.Cpf,
+                    user.Id);
+            }
+            else
+            {
+                doador = new(
+                    input.Doador.NomeCompleto,
+                    input.Doador.Celular,
+                    input.Doador.NomeEmpresa,
+                    input.Doador.Cnpj,
+                    user.Id);
+            }
+
             _context.Doador.Add(doador);
             _context.SaveChanges();
 
@@ -68,8 +86,8 @@ namespace LumenSolar.WebAPI.Controllers
         {
             IdentityUser user = new()
             {
-                Email = input.Email,
-                UserName = input.Email
+                Email = input.Familia.Email,
+                UserName = input.Familia.Email,
             };
 
             IdentityResult result = await _userManager.CreateAsync(user, input.Senha);
@@ -78,36 +96,23 @@ namespace LumenSolar.WebAPI.Controllers
 
             await _userManager.AddToRoleAsync(user, "Familia");
 
-
-            FamiliaEndereco familiaEndereco = new(input.Cep, input.Rua, input.Numero, input.Bairro, input.Cidade, input.Uf);
-            Familia familia = new(input.Cep, input.RendaMensal, 3, familiaEndereco, user);
+            FamiliaEndereco endereco = new(input.Familia.Cep, input.Familia.Rua, input.Familia.Numero, input.Familia.Bairro, input.Familia.Cidade, input.Familia.Uf);
+            
+            Familia familia = new(
+                input.Familia.NomeResponsavel,
+                input.Familia.Cpf,
+                input.Familia.Celular,
+                input.Familia.RendaFamiliar,
+                input.Familia.NumeroMoradores,
+                input.Familia.GastoComEnergia,
+                input.Familia.SituacaoVulnerabilidade,
+                endereco,
+                user.Id);
 
             _context.Familia.Add(familia);
             _context.SaveChanges();
 
             return NoContent();
         }
-
-        [HttpPost("registrar_admin")]
-        [Authorize(Roles = "Admin")]  //Apenas Admins podem criar outros Admins.
-        public async Task<IActionResult> RegistrarAdmin([FromBody] RegistrarAdminInputModel input)
-        {
-            IdentityUser user = new()
-            {
-                Email = input.Email,
-                UserName = input.Email
-            };
-
-            IdentityResult result = await _userManager.CreateAsync(user, input.Senha);
-            if (!result.Succeeded)
-                return BadRequest(result.Errors);
-
-            // Adiciona role ADMIN
-            await _userManager.AddToRoleAsync(user, "Admin");
-
-            return NoContent();
-        }
-
-
     }
 }

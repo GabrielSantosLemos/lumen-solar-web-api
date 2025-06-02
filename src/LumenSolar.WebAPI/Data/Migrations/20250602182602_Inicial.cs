@@ -4,10 +4,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace LumenSolar.WebAPI.Migrations
+namespace LumenSolar.WebAPI.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialIdentity : Migration
+    public partial class Inicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -181,7 +181,12 @@ namespace LumenSolar.WebAPI.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    NomeCompleto = table.Column<string>(type: "text", nullable: false),
+                    Celular = table.Column<string>(type: "text", nullable: false),
+                    Tipo = table.Column<int>(type: "integer", nullable: false),
                     Cpf = table.Column<string>(type: "text", nullable: false),
+                    NomeEmpresa = table.Column<string>(type: "text", nullable: false),
+                    Cnpj = table.Column<string>(type: "text", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
@@ -201,9 +206,14 @@ namespace LumenSolar.WebAPI.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    NomeResponsavel = table.Column<string>(type: "text", nullable: false),
                     Cpf = table.Column<string>(type: "text", nullable: false),
-                    RendaMensal = table.Column<decimal>(type: "numeric", nullable: false),
-                    NumeroIntegrantes = table.Column<int>(type: "integer", nullable: false),
+                    Celular = table.Column<string>(type: "text", nullable: false),
+                    RendaFamiliar = table.Column<decimal>(type: "numeric", nullable: false),
+                    NumeroMoradores = table.Column<int>(type: "integer", nullable: false),
+                    GastoComEnergia = table.Column<decimal>(type: "numeric", nullable: false),
+                    SituacaoVulnerabilidade = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
                     EnderecoId = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: false)
                 },
@@ -220,6 +230,27 @@ namespace LumenSolar.WebAPI.Migrations
                         name: "FK_Familia_FamiliaEndereco_EnderecoId",
                         column: x => x.EnderecoId,
                         principalTable: "FamiliaEndereco",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Doacao",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Valor = table.Column<decimal>(type: "numeric", nullable: false),
+                    Data = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DoadorId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Doacao", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Doacao_Doador_DoadorId",
+                        column: x => x.DoadorId,
+                        principalTable: "Doador",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -262,6 +293,11 @@ namespace LumenSolar.WebAPI.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Doacao_DoadorId",
+                table: "Doacao",
+                column: "DoadorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Doador_UserId",
                 table: "Doador",
                 column: "UserId",
@@ -298,7 +334,7 @@ namespace LumenSolar.WebAPI.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Doador");
+                name: "Doacao");
 
             migrationBuilder.DropTable(
                 name: "Familia");
@@ -307,10 +343,13 @@ namespace LumenSolar.WebAPI.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Doador");
 
             migrationBuilder.DropTable(
                 name: "FamiliaEndereco");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }
