@@ -4,6 +4,7 @@ using LumenSolar.WebAPI.Models.Familias;
 using LumenSolar.WebAPI.Models.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace LumenSolar.WebAPI.Controllers
 {
@@ -31,13 +32,33 @@ namespace LumenSolar.WebAPI.Controllers
             if (user is null)
                 return BadRequest("Usuário não existe.");
 
+            int id = 0;
+            Doador? doador = _context.Doador.Where(x => x.UserId == user.Id).FirstOrDefault();
+            if(doador != null)
+            {
+                id = doador.Id;
+            }
+
+            Familia? familia = _context.Familia.Where(x => x.UserId == user.Id).FirstOrDefault();
+            if (familia != null)
+            {
+                id = familia.Id;
+            }
+
             Microsoft.AspNetCore.Identity.SignInResult checkPassword = await _signInManager.CheckPasswordSignInAsync(user, input.Senha, false);
             if (!checkPassword.Succeeded)
                 return BadRequest("Senha Incorreta.");
 
             string token = await _tokenService.GerarToken(user);
+            IList<string> roles = await _userManager.GetRolesAsync(user);
 
-            return Ok(token);
+            return Ok(new
+            {
+                Id = id,
+                Email = user.Email,
+                Token = token,
+                Roles = roles
+            });
         }
 
         [HttpPost("registrar_doador")]
@@ -78,7 +99,16 @@ namespace LumenSolar.WebAPI.Controllers
             _context.Doador.Add(doador);
             _context.SaveChanges();
 
-            return NoContent();
+            string token = await _tokenService.GerarToken(user);
+            IList<string> roles = await _userManager.GetRolesAsync(user);
+
+            return Ok(new
+            {
+                Id = doador.Id,
+                Email = user.Email,
+                Token = token,
+                Roles = roles
+            });
         }
 
         [HttpPost("registrar_familia")]
@@ -112,7 +142,16 @@ namespace LumenSolar.WebAPI.Controllers
             _context.Familia.Add(familia);
             _context.SaveChanges();
 
-            return NoContent();
+            string token = await _tokenService.GerarToken(user);
+            IList<string> roles = await _userManager.GetRolesAsync(user);
+
+            return Ok(new
+            {
+                Id = familia.Id,
+                Email = user.Email,
+                Token = token,
+                Roles = roles
+            });
         }
     }
 }
