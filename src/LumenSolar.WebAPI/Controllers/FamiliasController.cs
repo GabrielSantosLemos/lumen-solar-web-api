@@ -1,5 +1,6 @@
 ﻿using LumenSolar.WebAPI.Data;
 using LumenSolar.WebAPI.Models.Familias;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ namespace LumenSolar.WebAPI.Controllers
 {
     [Route("api/familias")]
     [ApiController]
+    [Authorize(Roles = "familia")]
     public class FamiliasController : ControllerBase
     {
         private readonly Context _context;
@@ -46,6 +48,8 @@ namespace LumenSolar.WebAPI.Controllers
                 input.SituacaoVulnerabilidade);
 
             familia.Endereco.Atualizar(input.Cep, input.Rua, input.Numero, input.Bairro, input.Cidade, input.Uf);
+
+            familia.PreAnaliseAutomatica();
 
             if (familia.User.Email != input.Email)
             {

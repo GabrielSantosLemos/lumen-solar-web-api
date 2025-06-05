@@ -213,9 +213,9 @@ namespace LumenSolar.WebAPI.Data.Migrations
                     NumeroMoradores = table.Column<int>(type: "integer", nullable: false),
                     GastoComEnergia = table.Column<decimal>(type: "numeric", nullable: false),
                     SituacaoVulnerabilidade = table.Column<string>(type: "text", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
                     EnderecoId = table.Column<int>(type: "integer", nullable: false),
-                    UserId = table.Column<string>(type: "text", nullable: false)
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

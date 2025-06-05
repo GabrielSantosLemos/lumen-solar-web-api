@@ -4,5 +4,6 @@
     {
         EmAnalise = 1,
         Apto = 2,
+        NaoAprovado = 3
     }
 }

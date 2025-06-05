@@ -1,5 +1,6 @@
 ﻿using LumenSolar.WebAPI.Data;
 using LumenSolar.WebAPI.Models.Doadores;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ namespace LumenSolar.WebAPI.Controllers;
 
 [Route("api/doadores")]
 [ApiController]
+[Authorize(Roles = "doador")]
 public class DoadoresController : ControllerBase
 {
     private readonly Context _context;

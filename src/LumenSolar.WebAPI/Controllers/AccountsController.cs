@@ -139,6 +139,8 @@ namespace LumenSolar.WebAPI.Controllers
                 endereco,
                 user.Id);
 
+            familia.PreAnaliseAutomatica();
+
             _context.Familia.Add(familia);
             _context.SaveChanges();
 

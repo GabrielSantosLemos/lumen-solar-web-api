@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LumenSolar.WebAPI.Data.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20250602182602_Inicial")]
+    [Migration("20250605172612_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />

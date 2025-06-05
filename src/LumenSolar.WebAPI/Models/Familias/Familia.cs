@@ -38,13 +38,29 @@ namespace LumenSolar.WebAPI.Models.Familias
         public int NumeroMoradores { get; set; }
         public decimal GastoComEnergia { get; set; }
         public string SituacaoVulnerabilidade { get; set; }
-        public StatusEnum Status { get; set; }
 
         public FamiliaEndereco Endereco { get; set; }
         public int EnderecoId { get; set; }
 
         public IdentityUser User { get; set; }
         public string UserId { get; set; }
+
+        public StatusEnum Status { get; set; }
+
+        public void PreAnaliseAutomatica()
+        {
+            if (GastoComEnergia <= 0 || NumeroMoradores <= 0 || RendaFamiliar <= 0)
+                Status = StatusEnum.EmAnalise;
+
+            decimal rendaPerCapita = RendaFamiliar / NumeroMoradores;
+            decimal consumoMedio = GastoComEnergia / NumeroMoradores;
+            decimal pontuacao = (rendaPerCapita / consumoMedio) * NumeroMoradores;
+
+            if (pontuacao > 50)
+                Status = StatusEnum.NaoAprovado;
+            else
+                Status = StatusEnum.EmAnalise;
+        }
 
         public void AtualizarStatus(StatusEnum status)
         {
