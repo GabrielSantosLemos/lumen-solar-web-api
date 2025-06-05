@@ -1,0 +1,33 @@
+trigger:
+  tags:
+    include:
+      - "*"
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  buildConfiguration: "Release"
+
+steps:
+  - task: UseDotNet@2
+    displayName: "Use .Net Core sdk 8.x"
+    inputs:
+      version: 8.x
+
+  - script: dotnet build --configuration $(buildConfiguration)
+    displayName: "Run a one-line script"
+
+  - task: DotNetCoreCLI@2
+    displayName: "dotnet publish --configuration $(buildConfiguration) --output $(Build.ArtifactStageingDirectory)"
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: "src/LumenSolar.WebAPI/LumenSolar.WebAPI.csproj"
+      arguments: "--configuration $(buildConfiguration) --output $(Build.ArtifactStageingDirectory)"
+      zipAfterPublish: true
+
+  - task: PublishBuildArtifacts@1
+    displayName: "publish artifacts"
+    inputs:
+      PathtoPublish: "$(Build.ArtifactStageingDirectory)"
