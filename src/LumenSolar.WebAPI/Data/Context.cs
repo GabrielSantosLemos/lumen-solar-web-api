@@ -1,5 +1,6 @@
 ﻿using LumenSolar.WebAPI.Models.Doadores;
 using LumenSolar.WebAPI.Models.Familias;
+using LumenSolar.WebAPI.Models.PaineisSolares;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,7 @@ namespace LumenSolar.WebAPI.Data
         public DbSet<FamiliaEndereco> FamiliaEndereco { get; set; }
         public DbSet<Doador> Doador { get; set; }
         public DbSet<Doacao> Doacao { get; set; }
+        public DbSet<PainelSolar> PainelSolar { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
